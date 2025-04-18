@@ -1,0 +1,50 @@
+.confirmation-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-md);
+  transform: translateX(120%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  border-width: var(--border-width);
+  border-style: solid;
+}
+
+.confirmation-message.show {
+  transform: translateX(0);
+}
+
+.confirmation-message.success {
+  background-color: #d1fae5; /* Lighter success background */
+  color: #065f46; /* Darker success text */
+  border-color: var(--accent-success);
+}
+
+.confirmation-message.error {
+  background-color: #fee2e2; /* Lighter error background */
+  color: #991b1b; /* Darker error text */
+  border-color: var(--accent-error);
+}
+
+.confirmation-message .icon {
+  font-size: var(--font-size-xl);
+}
+
+.confirmation-message .message {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+}
+
+@media (max-width: 768px) {
+  .confirmation-message {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    padding: 0.75rem 1rem;
+  }
+}

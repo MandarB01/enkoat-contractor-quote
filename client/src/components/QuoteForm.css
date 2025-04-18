@@ -1,0 +1,50 @@
+/* Uses variables from styles/variables.css and main.css */
+
+.quote-form-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: var(--bg-main);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border: var(--border-width) solid var(--bg-tertiary);
+}
+
+.quote-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* Form group, label, input, select styles are inherited from main.css */
+/* Remove redundant styles */
+/*
+.form-group { ... }
+.form-group label { ... }
+.form-group input, .form-group select { ... }
+.form-group input:focus, .form-group select:focus { ... }
+.form-group input.error, .form-group select.error { ... }
+.error-message { ... } /* Inherited from main.css */
+*/ button[type="submit"] {
+  /* Inherits base button styles from main.css */
+  padding: 0.8rem 1.5rem;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-top: 1rem;
+  width: auto; /* Allow button to size naturally or control with layout */
+  justify-self: start; /* Example alignment */
+}
+
+/* Hover and disabled states inherited from main.css */
+/*
+button[type="submit"]:hover { ... }
+button[type="submit"]:disabled { ... }
+*/
+
+@media (max-width: 768px) {
+  .quote-form-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  /* Input/Select padding adjusted in main.css */
+}

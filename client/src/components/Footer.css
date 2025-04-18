@@ -1,0 +1,66 @@
+/* Uses variables from styles/variables.css */
+
+.footer {
+  background-color: var(--bg-main); /* Changed back to light background */
+  color: var(--text-secondary); /* Changed text color for light background */
+  padding: 1.5rem 0;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05); /* Re-added shadow for light bg */
+  margin-top: auto;
+  border-top: var(--border-width) solid var(--bg-tertiary); /* Re-added subtle border */
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.footer-logo {
+  flex-shrink: 0;
+}
+
+.footer-logo img {
+  height: 30px;
+  width: auto;
+}
+
+.footer-text {
+  flex-grow: 1;
+  text-align: right;
+  font-size: var(--font-size-sm);
+}
+
+.footer-text p {
+  margin: 0;
+}
+
+.footer-content a {
+  color: var(--primary-main); /* Changed link color for light background */
+  text-decoration: none;
+  transition: var(--transition-short);
+}
+
+.footer-content a:hover {
+  color: var(--primary-light);
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .footer-text {
+    text-align: center;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding: 1rem 0;
+  }
+}

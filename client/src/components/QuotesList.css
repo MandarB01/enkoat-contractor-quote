@@ -1,0 +1,234 @@
+/* Uses variables from styles/variables.css and main.css */
+
+.quotes-list {
+  padding: 2rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.quotes-list h2 {
+  color: var(--primary-dark);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.filters {
+  background: var(--bg-main);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  border: var(--border-width) solid var(--bg-tertiary);
+  align-items: flex-end;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: var(--border-width) solid var(--input-border);
+  border-radius: var(--border-radius);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--primary-main);
+  box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.clear-filters-btn {
+  padding: 0.75rem 1.5rem;
+  background: var(--accent-warning);
+  color: var(--text-on-primary);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium);
+  transition: background-color var(--transition-short);
+}
+
+.clear-filters-btn:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.clear-filters-btn:disabled {
+  background: var(--text-light);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.quotes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.quote-card {
+  background: var(--bg-main);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  border: var(--border-width) solid var(--bg-tertiary);
+  transition: transform var(--transition-short),
+    box-shadow var(--transition-short);
+}
+
+.quote-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.quote-card h3 {
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.quote-card p {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.quote-card p strong {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-light);
+  font-size: var(--font-size-lg);
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--bg-tertiary);
+  border-top: 4px solid var(--primary-main);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.error-display {
+  text-align: center;
+  padding: 2rem;
+  background: #fee2e2; /* Lighter error background */
+  color: #991b1b; /* Darker error text */
+  border: var(--border-width) solid var(--accent-error);
+  border-radius: var(--border-radius);
+  margin: 2rem 0;
+}
+
+.error-message {
+  text-align: center;
+  padding: 1rem;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.retry-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary-main);
+  color: var(--text-on-primary);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium);
+}
+
+.retry-btn:hover {
+  background: var(--primary-dark);
+}
+
+.no-quotes {
+  text-align: center;
+  padding: 3rem;
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  color: var(--text-light);
+  border: var(--border-width) dashed var(--input-border);
+}
+
+.download-btn {
+  /* Inherits base button styles */
+  width: 100%;
+  background: var(--accent-success);
+  color: var(--text-on-primary);
+  padding: 0.75rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin-top: 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition-short);
+}
+
+.download-btn:hover:not(:disabled) {
+  background: #047857; /* Darker success */
+}
+
+.download-btn:disabled {
+  background: var(--text-light);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .quotes-list {
+    padding: 1rem;
+  }
+
+  .filters {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .filter-group {
+    min-width: 100%;
+  }
+
+  .quote-card {
+    padding: 1rem;
+  }
+
+  .quotes-grid {
+    gap: 1rem;
+  }
+}
