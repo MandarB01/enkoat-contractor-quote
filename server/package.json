@@ -1,0 +1,38 @@
+{
+  "name": "contractor-quote-portal",
+  "version": "1.0.0",
+  "description": "A full-stack application for capturing roofing project quotes from contractors.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^6.14.0",
+    "helmet": "^4.6.0",
+    "hpp": "^0.2.3",
+    "mongoose": "^8.13.2",
+    "morgan": "^1.10.0",
+    "pdfkit": "^0.17.0",
+    "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.1.4",
+    "nodemon": "^3.1.9",
+    "supertest": "^6.3.4"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
