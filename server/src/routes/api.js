@@ -36,25 +36,6 @@ const getQuotesLimiter = rateLimit({
 });
 
 /**
- * Health Check Endpoint
- * @route GET /api/health
- * @description Check API and database health
- * @access Public
- */
-router.get("/health", (req, res) => {
-  res.status(200).json({
-    status: "up",
-    timestamp: new Date().toISOString(),
-    database:
-      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
-    message:
-      mongoose.connection.readyState === 1
-        ? "Successfully connected to MongoDB Atlas"
-        : "Not connected to MongoDB Atlas",
-  });
-});
-
-/**
  * Submit Quote Endpoint
  * @route POST /api/quotes
  * @description Submit a new contractor quote
@@ -89,19 +70,6 @@ router.get(
   "/quotes/:id/pdf",
   getQuotesLimiter,
   quoteController.generateQuotePDF
-);
-
-/**
- * Export Quotes as CSV Endpoint
- * @route GET /api/quotes/export/csv
- * @description Export all quotes as CSV file
- * @access Public
- * @rateLimited 100 requests per 15 minutes per IP
- */
-router.get(
-  "/quotes/export/csv",
-  getQuotesLimiter,
-  quoteController.exportQuotesCSV
 );
 
 module.exports = router;
