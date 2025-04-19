@@ -1,4 +1,3 @@
-// filepath: /Users/mandarburande/Projects/EnKoat/enkoat-contractor-quote/contractor-quote-portal/server/src/__tests__/api.test.js
 const request = require("supertest");
 const app = require("../app"); // Assuming your Express app instance is exported from app.js
 const mongoose = require("mongoose");
@@ -30,16 +29,6 @@ afterAll(async () => {
 });
 
 describe("API Endpoints", () => {
-  // Test Health Check endpoint
-  describe("GET /api/health", () => {
-    it("should return 200 OK and status message", async () => {
-      const res = await request(app).get("/api/health");
-      expect(res.statusCode).toEqual(200);
-      expect(res.body).toHaveProperty("status", "UP");
-      expect(res.body).toHaveProperty("timestamp");
-    });
-  });
-
   // Test Quote Submission endpoint
   describe("POST /api/quotes", () => {
     const validQuoteData = {
@@ -235,72 +224,6 @@ describe("API Endpoints", () => {
       expect(res.statusCode).toEqual(400);
       // The exact error message might depend on your ObjectId validation middleware/logic
       expect(res.body).toHaveProperty("message", "Invalid Quote ID format");
-    });
-  });
-
-  // Test CSV Export endpoint
-  describe("GET /api/quotes/export/csv", () => {
-    beforeEach(async () => {
-      // Seed data for CSV export
-      const date1 = new Date();
-      date1.setDate(date1.getDate() + 10);
-      const date2 = new Date();
-      date2.setDate(date2.getDate() + 20);
-      await Quote.insertMany([
-        {
-          contractorName: "CSV A",
-          company: "Comp A",
-          roofSize: 1100,
-          roofType: "Metal",
-          projectCity: "City A",
-          projectState: "CA",
-          projectDate: date1,
-        },
-        {
-          contractorName: "CSV B",
-          company: "Comp B",
-          roofSize: 2100,
-          roofType: "TPO",
-          projectCity: "City B",
-          projectState: "AZ",
-          projectDate: date2,
-        },
-      ]);
-    });
-
-    it("should return 200 OK and CSV data for all quotes", async () => {
-      const res = await request(app).get("/api/quotes/export/csv");
-      expect(res.statusCode).toEqual(200);
-      expect(res.headers["content-type"]).toEqual("text/csv");
-      expect(res.headers["content-disposition"]).toContain(
-        'attachment; filename="quotes_export_'
-      );
-      expect(res.text).toContain(
-        "Contractor Name,Company,Roof Size (sq ft),Roof Type,Project City,Project State,Project Date"
-      ); // Check header row
-      expect(res.text).toContain("CSV A,Comp A,1100,Metal,City A,CA");
-      expect(res.text).toContain("CSV B,Comp B,2100,TPO,City B,AZ");
-    });
-
-    it("should return 200 OK and filtered CSV data", async () => {
-      const res = await request(app).get("/api/quotes/export/csv?state=AZ");
-      expect(res.statusCode).toEqual(200);
-      expect(res.headers["content-type"]).toEqual("text/csv");
-      expect(res.text).toContain(
-        "Contractor Name,Company,Roof Size (sq ft),Roof Type,Project City,Project State,Project Date"
-      );
-      expect(res.text).not.toContain("CSV A,Comp A");
-      expect(res.text).toContain("CSV B,Comp B,2100,TPO,City B,AZ");
-    });
-
-    it("should return 200 OK and empty CSV (headers only) if no quotes match filter", async () => {
-      const res = await request(app).get("/api/quotes/export/csv?state=NY");
-      expect(res.statusCode).toEqual(200);
-      expect(res.headers["content-type"]).toEqual("text/csv");
-      expect(res.text).toContain(
-        "Contractor Name,Company,Roof Size (sq ft),Roof Type,Project City,Project State,Project Date"
-      );
-      expect(res.text.split("\n").length).toBe(2); // Header row + one empty line usually
     });
   });
 });

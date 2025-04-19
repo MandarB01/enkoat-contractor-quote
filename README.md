@@ -12,7 +12,7 @@ A full-stack web application that enables contractors to submit and manage roofi
 - **Data Persistence:** Utilizes MongoDB with Mongoose ODM for storing and retrieving quote data.
 - **Security:** Implements basic security measures like CORS, Helmet, rate limiting, and input sanitization.
 - **Logging:** Uses Morgan for HTTP request logging and Winston (via `loggerUtil.js`) for application-level logging.
-- **PDF & CSV Export:** Functionality to generate a PDF for a single quote and export all quotes to a CSV file.
+- **PDF Export:** Functionality to generate a PDF for a single quote.
 
 ## Project Structure
 
@@ -108,7 +108,7 @@ enkoat-contractor-quote/
 
 3.  **Setup Frontend:**
     ```bash
-    cd client 
+    cd client
     npm install
     npm start   # Starts the React development server
     ```
@@ -145,13 +145,11 @@ The core data model is the `Quote`, defined in `server/src/models/Quote.js`.
 
 All endpoints are prefixed with `/api`.
 
-| Method | Path                 | Rate Limit         | Description                                       | Request Body / Query Params                                                                     | Response Body (Success: 2xx)                                                               | Response Body (Error: 4xx/5xx)                                                                     |
-| :----- | :------------------- | :----------------- | :------------------------------------------------ | :---------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-| `GET`  | `/health`            | N/A                | Checks API and database health status.            | -                                                                                               | `{ status: 'up', timestamp: '...', database: 'connected'/'disconnected', message: '...' }` | -                                                                                                  |
-| `POST` | `/quotes`            | 10/hour per IP     | Submits a new quote.                              | **Body:** `Quote` object (see Data Model)                                                       | `201 Created`: `{ status: 'success', data: { quote: <new_quote_object> } }`                | `400 Bad Request`: Validation errors <br> `429 Too Many Requests` <br> `500 Internal Server Error` |
-| `GET`  | `/quotes`            | 100/15 mins per IP | Retrieves a list of quotes.                       | **Query:** `state` (e.g., TX), `roofType` (e.g., Metal), `page`, `limit`, `sortBy`, `sortOrder` | `200 OK`: `{ status: 'success', results: <count>, data: { quotes: [<quote_objects>] } }`   | `429 Too Many Requests` <br> `500 Internal Server Error`                                           |
-| `GET`  | `/quotes/:id/pdf`    | 100/15 mins per IP | Generates and returns a PDF for a specific quote. | **Param:** `id` (Quote MongoDB ObjectId)                                                        | `200 OK`: PDF file stream (`Content-Type: application/pdf`)                                | `404 Not Found` <br> `429 Too Many Requests` <br> `500 Internal Server Error`                      |
-| `GET`  | `/quotes/export/csv` | 100/15 mins per IP | Exports all quotes as a CSV file.                 | -                                                                                               | `200 OK`: CSV file stream (`Content-Type: text/csv`)                                       | `429 Too Many Requests` <br> `500 Internal Server Error`                                           |
+| Method | Path              | Rate Limit         | Description                                       | Request Body / Query Params                                                                     | Response Body (Success: 2xx)                                                             | Response Body (Error: 4xx/5xx)                                                                     |
+| :----- | :---------------- | :----------------- | :------------------------------------------------ | :---------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| `POST` | `/quotes`         | 10/hour per IP     | Submits a new quote.                              | **Body:** `Quote` object (see Data Model)                                                       | `201 Created`: `{ status: 'success', data: { quote: <new_quote_object> } }`              | `400 Bad Request`: Validation errors <br> `429 Too Many Requests` <br> `500 Internal Server Error` |
+| `GET`  | `/quotes`         | 100/15 mins per IP | Retrieves a list of quotes.                       | **Query:** `state` (e.g., TX), `roofType` (e.g., Metal), `page`, `limit`, `sortBy`, `sortOrder` | `200 OK`: `{ status: 'success', results: <count>, data: { quotes: [<quote_objects>] } }` | `429 Too Many Requests` <br> `500 Internal Server Error`                                           |
+| `GET`  | `/quotes/:id/pdf` | 100/15 mins per IP | Generates and returns a PDF for a specific quote. | **Param:** `id` (Quote MongoDB ObjectId)                                                        | `200 OK`: PDF file stream (`Content-Type: application/pdf`)                              | `404 Not Found` <br> `429 Too Many Requests` <br> `500 Internal Server Error`                      |
 
 ## Middleware (Server-side)
 
@@ -211,29 +209,10 @@ Given more time, these enhancements would be valuable additions:
 
 2. Enhanced Features
 
-   - File upload for project documents
-   - CSV export functionality
-   - Real-time quote status updates
-   - Email notifications
-
-3. Performance & UX
-
-   - Client-side caching
-   - Infinite scroll for quote listings
+   - File upload for project documents in the quote form
    - Advanced search/filter capabilities
-   - Interactive dashboard with analytics
 
-4. Technical Improvements
-   - Integration tests coverage
+3. Technical Improvements
+   - Enhanced tests coverage
    - CI/CD pipeline setup
-   - Docker containerization
    - Rate limiting and API security
-   - Automated backup system for MongoDB
-
-## Contributing
-
-Please read our contributing guidelines and code of conduct before submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.

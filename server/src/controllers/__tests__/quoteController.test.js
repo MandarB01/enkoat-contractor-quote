@@ -4,7 +4,6 @@ const Quote = require("../../models/Quote");
 const AppError = require("../../utils/AppError");
 const { validationResult } = require("express-validator");
 const pdfGenerator = require("../../utils/pdfGenerator"); // Assuming you'll create this
-const csvGenerator = require("../../utils/csvGenerator"); // Assuming you'll create this
 
 // Mock dependencies
 jest.mock("../../models/Quote");
@@ -26,7 +25,6 @@ jest.mock("express-validator", () => ({
   })),
 }));
 jest.mock("../../utils/pdfGenerator"); // Mock the PDF generator utility
-jest.mock("../../utils/csvGenerator"); // Mock the CSV generator utility
 
 // Mock request and response objects
 const mockRequest = (body = {}, query = {}, params = {}) => ({
@@ -215,74 +213,5 @@ describe("Quote Controller", () => {
     });
 
     // Add test for invalid ID format if validation is done in controller/middleware
-  });
-
-  // --- Test exportQuotesCSV ---
-  describe("exportQuotesCSV", () => {
-    it("should fetch quotes based on filters and generate CSV", async () => {
-      const req = mockRequest({}, { state: "TX" }); // Filter by state
-      const res = mockResponse();
-      const mockQuotes = [
-        { _id: "1", state: "TX" },
-        { _id: "2", state: "TX" },
-      ];
-      const mockCsvData = "col1,col2\nval1,val2";
-
-      Quote.find = jest.fn().mockResolvedValue(mockQuotes);
-      csvGenerator.generateQuotesCSV = jest.fn().mockResolvedValue(mockCsvData); // Mock CSV generator
-
-      await quoteController.exportQuotesCSV(req, res, mockNext);
-
-      expect(Quote.find).toHaveBeenCalledWith({ projectState: "TX" });
-      expect(csvGenerator.generateQuotesCSV).toHaveBeenCalledWith(mockQuotes);
-      expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "text/csv");
-      expect(res.setHeader).toHaveBeenCalledWith(
-        "Content-Disposition",
-        expect.stringContaining('attachment; filename="quotes_export_')
-      );
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.send).toHaveBeenCalledWith(mockCsvData);
-    });
-
-    it("should return 500 status if fetching quotes fails", async () => {
-      const req = mockRequest();
-      const res = mockResponse();
-      const error = new Error("Database error");
-      Quote.find = jest.fn().mockRejectedValue(error);
-
-      await quoteController.exportQuotesCSV(req, res, mockNext);
-
-      expect(Quote.find).toHaveBeenCalledWith({});
-      expect(csvGenerator.generateQuotesCSV).not.toHaveBeenCalled();
-      // Expect a 500 status response, not next(error)
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith({
-        message: "Error generating CSV",
-        error: error.message,
-      });
-      expect(mockNext).not.toHaveBeenCalled();
-    });
-
-    it("should return 500 status if CSV generation fails", async () => {
-      const req = mockRequest();
-      const res = mockResponse();
-      const mockQuotes = [{ _id: "1" }];
-      const error = new Error("CSV generation failed");
-
-      Quote.find = jest.fn().mockResolvedValue(mockQuotes);
-      csvGenerator.generateQuotesCSV = jest.fn().mockRejectedValue(error); // Mock failure
-
-      await quoteController.exportQuotesCSV(req, res, mockNext);
-
-      expect(Quote.find).toHaveBeenCalledWith({});
-      expect(csvGenerator.generateQuotesCSV).toHaveBeenCalledWith(mockQuotes);
-      // Expect a 500 status response, not next(error)
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith({
-        message: "Error generating CSV",
-        error: error.message,
-      });
-      expect(mockNext).not.toHaveBeenCalled();
-    });
   });
 });
